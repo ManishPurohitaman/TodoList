@@ -1,14 +1,20 @@
 package main
 
 import (
-    "fmt"
-    "net/http"
-    "go-todo/routers"
+	"fmt"
+	"log"
+	"net/http"
+
+	"go-todo/routers"
+	"go-todo/middlewares"
 )
 
 func main() {
-    r := routers.InitializeRouter() 
+    log.Println("main Method called")
+	r := routers.InitializeRouter()
+	handler := middlewares.CORS(r)
 
-    fmt.Println("Todo List service running on http://localhost:8080")
-    http.ListenAndServe(":8080", r)
+	port := ":8080"
+	fmt.Println("Todo List service running on http://localhost" + port)
+	log.Fatal(http.ListenAndServe(port, handler))
 }
